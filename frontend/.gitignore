@@ -1,13 +1,7 @@
-# Node.js
-node_modules/
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# Dependency lock files
-package-lock.json
-
-# Environment variables
-.env
-
-# React
+# dependencies
+/node_modules
 /.pnp
 .pnp.js
 

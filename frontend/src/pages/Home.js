@@ -19,7 +19,8 @@ const Home = () => {
     };
 
     fetchWorkOuts();
-  }, [dispatch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="home">
@@ -29,7 +30,7 @@ const Home = () => {
             <WorkoutDetails key={workout._id} workout={workout} />
           ))}
       </div>
-      <WorkoutForm />
+      <WorkoutForm edit={false} formTitle={"Add a New Workout"} />
     </div>
   );
 };

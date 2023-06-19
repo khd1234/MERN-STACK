@@ -1,12 +1,19 @@
 import { useState } from "react";
 import { useWorkoutsContext } from "../hooks/useWorkoutsContext";
 
-const WorkoutForm = () => {
-  const { dispatch } = useWorkoutsContext();
+const WorkoutForm = ({ formTitle, edit, id, setEdit }) => {
+  const { workouts, dispatch } = useWorkoutsContext();
 
-  const [title, setTitle] = useState("");
-  const [load, setLoad] = useState("");
-  const [reps, setReps] = useState("");
+  const obj = workouts && workouts.find((obj) => obj._id === id);
+  const titleValue = edit ? obj.title : "";
+  const [title, setTitle] = useState(titleValue);
+
+  const loadValue = edit ? obj.load : 0;
+  const [load, setLoad] = useState(loadValue);
+
+  const repsValue = edit ? obj.reps : 0;
+  const [reps, setReps] = useState(repsValue);
+
   const [error, setError] = useState(null);
 
   const handleSubmit = async (e) => {
@@ -18,7 +25,7 @@ const WorkoutForm = () => {
       body: JSON.stringify(workout),
     });
     const json = await response.json();
-
+    console.log(json);
     if (!response.ok) {
       setError(json.error);
     }
@@ -32,9 +39,24 @@ const WorkoutForm = () => {
     }
   };
 
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    const workout = { title, load: load, reps: reps };
+    const response = await fetch("api/workouts/" + id, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(workout),
+    });
+    const json = await response.json();
+    if (response.ok) {
+      setEdit((prev) => !prev);
+      dispatch({ type: "UPDATE_WORKOUT", payload: json });
+    }
+  };
+
   return (
     <form className="create" onSubmit={handleSubmit}>
-      <h3>Add a New Workout</h3>
+      {formTitle && <h3>{formTitle}</h3>}
 
       <label>Excersize Title:</label>
       <input
@@ -56,8 +78,8 @@ const WorkoutForm = () => {
         value={reps}
         onChange={(e) => setReps(e.target.value)}
       />
-
-      <button>Add Workout</button>
+      {edit && <button onClick={handleUpdate}>Update</button>}
+      {!edit && <button>Add Workout</button>}
       {error && <div className="error">{error}</div>}
     </form>
   );

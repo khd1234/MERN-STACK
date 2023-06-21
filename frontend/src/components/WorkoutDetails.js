@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useWorkoutsContext } from "../hooks/useWorkoutsContext";
-import WorkoutForm from "./WorkoutForm";
+import WorkoutEditForm from "./WorkoutEditForm";
+
+import formatDistanceToNow from "date-fns/formatDistanceToNow";
 
 const WorkoutDetails = ({ workout }) => {
   const { dispatch } = useWorkoutsContext();
@@ -36,10 +38,15 @@ const WorkoutDetails = ({ workout }) => {
         <strong>Reps: </strong>
         {workout.reps}
       </p>
-      <p>{workout.createdAt}</p>
-      <button onClick={() => setEdit((prev) => !prev)}>Edit</button>
-      <span onClick={handleClick}>Delete</span>
-      {edit && <WorkoutForm id={workout._id} setEdit = {setEdit} edit={true} formTitle={false} />}
+      <p>
+        {formatDistanceToNow(new Date(workout.createdAt), { addSuffix: true })}
+      </p>
+      <button class="button is-small" onClick={() => setEdit((prev) => !prev)}>Edit</button>
+      <span className="material-symbols-outlined" onClick={handleClick}>
+        delete
+      </span>
+
+      {edit && <WorkoutEditForm id={workout._id} setEdit = {setEdit} />}
     </div>
   );
 };

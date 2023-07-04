@@ -41,12 +41,14 @@ const WorkoutDetails = ({ workout }) => {
       <p>
         {formatDistanceToNow(new Date(workout.createdAt), { addSuffix: true })}
       </p>
-      <button class="button is-small" onClick={() => setEdit((prev) => !prev)}>Edit</button>
+      <button class="button is-small" onClick={() => setEdit((prev) => !prev)}>
+        {edit ? "Hide" : "Edit"}
+      </button>
       <span className="material-symbols-outlined" onClick={handleClick}>
         delete
       </span>
 
-      {edit && <WorkoutEditForm id={workout._id} setEdit = {setEdit} />}
+      {edit && <WorkoutEditForm id={workout._id} setEdit={setEdit} />}
     </div>
   );
 };

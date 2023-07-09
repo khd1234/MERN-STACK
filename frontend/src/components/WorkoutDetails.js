@@ -3,10 +3,11 @@ import { useWorkoutsContext } from "../hooks/useWorkoutsContext";
 import WorkoutEditForm from "./WorkoutEditForm";
 
 import formatDistanceToNow from "date-fns/formatDistanceToNow";
+import { useAuthContext } from "../hooks/useAuthContext";
 
 const WorkoutDetails = ({ workout }) => {
   const { dispatch } = useWorkoutsContext();
-
+  const { user } = useAuthContext();
   const [edit, setEdit] = useState(false);
 
   const handleClick = async () => {
@@ -18,7 +19,10 @@ const WorkoutDetails = ({ workout }) => {
     }
     const response = await fetch("api/workouts/" + workout._id, {
       method: "DELETE",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "authorization": `Bearer ${user.token}`,
+      },
     });
     const json = await response.json();
 

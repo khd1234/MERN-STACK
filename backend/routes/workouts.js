@@ -1,5 +1,6 @@
 const express = require("express");
 const Workout = require("../models/workoutModel");
+const requireAuth = require("../middleware/requireAuth")
 const {
   getWorkouts,
   getWorkout,
@@ -9,6 +10,9 @@ const {
 } = require("../controllers/workoutController");
 
 const router = express.Router();
+
+// Require auth for all workout routes
+router.use(requireAuth)
 
 // GET all workouts
 router.get("/", getWorkouts);

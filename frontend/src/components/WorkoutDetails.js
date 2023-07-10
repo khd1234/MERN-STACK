@@ -8,9 +8,13 @@ import { useAuthContext } from "../hooks/useAuthContext";
 const WorkoutDetails = ({ workout }) => {
   const { dispatch } = useWorkoutsContext();
   const { user } = useAuthContext();
+
   const [edit, setEdit] = useState(false);
 
   const handleClick = async () => {
+    if (!user) {
+      return
+    }
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this item?"
     );
